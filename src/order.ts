@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 export interface Order {
   material: string;
   amount: number;
-  currency: number;
+  currency: string;
   price: number;
   timestamp: string;
   delivery: {
@@ -21,16 +21,22 @@ export interface Order {
 export const schema = new Schema<Order>({
   material: { type: String, required: true },
   amount: { type: Number, required: true },
-  currency: { type: Number, required: true },
+  currency: { type: String, required: true },
   price: { type: Number, required: true },
   timestamp: { type: String, required: true },
   delivery: {
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
-    address: {
-      street_name: { type: String, required: true },
-      street_number: { type: Number, required: true },
-      city: { type: String, required: true },
-    },
+    type: new Schema({
+      first_name: { type: String, required: true },
+      last_name: { type: String, required: true },
+      address: {
+        type: new Schema({
+          street_name: { type: String, required: true },
+          street_number: { type: Number, required: true },
+          city: { type: String, required: true },
+        }),
+        required: true,
+      },
+    }),
+    required: true,
   },
 });
